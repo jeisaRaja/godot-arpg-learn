@@ -1,9 +1,10 @@
 extends CharacterBody2D
 
 @export var speed:int
-
 @onready var animation = $AnimationPlayer
 
+var maxHealth: int = 3
+var currHealth: int = maxHealth
 func handleInput():
 	var moveDir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	velocity = moveDir * speed
@@ -32,4 +33,7 @@ func _physics_process(delta):
 	
 func _on_hurt_box_area_entered(area):
 	if area.name == "hitBox":
-		print(area.get_parent().name)
+		currHealth -= 1
+		if currHealth < 0:
+			currHealth = maxHealth
+		print(currHealth)

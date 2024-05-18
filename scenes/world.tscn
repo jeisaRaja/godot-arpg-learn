@@ -1,11 +1,13 @@
-[gd_scene load_steps=11 format=3 uid="uid://cs5xksoaugbo8"]
+[gd_scene load_steps=13 format=3 uid="uid://cs5xksoaugbo8"]
 
+[ext_resource type="Script" path="res://scenes/world.gd" id="1_fxkp4"]
 [ext_resource type="PackedScene" uid="uid://hlelf3a6byfr" path="res://player/player.tscn" id="1_vydqe"]
 [ext_resource type="Texture2D" uid="uid://b0aic2k17fw1d" path="res://art/TilesetNature.png" id="2_7ps1l"]
 [ext_resource type="Texture2D" uid="uid://co2qqklw8uskl" path="res://art/TilesetFloor.png" id="2_72ds7"]
 [ext_resource type="Texture2D" uid="uid://bx1acpx44o3or" path="res://art/TilesetDesert.png" id="3_ua6cn"]
 [ext_resource type="Script" path="res://scenes/followCam.gd" id="4_l8bmm"]
 [ext_resource type="PackedScene" uid="uid://b14mohbi57atu" path="res://lava/lava.tscn" id="6_l5sqk"]
+[ext_resource type="PackedScene" uid="uid://bmumq7m3ah53y" path="res://gui/hearts_container.tscn" id="7_fxodv"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_88g20"]
 texture = ExtResource("2_72ds7")
@@ -3791,6 +3793,7 @@ sources/1 = SubResource("TileSetAtlasSource_ds2o6")
 sources/2 = SubResource("TileSetAtlasSource_3e5kl")
 
 [node name="World" type="Node2D"]
+script = ExtResource("1_fxkp4")
 
 [node name="TileMap" type="TileMap" parent="."]
 y_sort_enabled = true
@@ -3815,3 +3818,7 @@ tilemap = NodePath("../..")
 [node name="lava" parent="TileMap" instance=ExtResource("6_l5sqk")]
 position = Vector2(108, 88)
 speed = 20
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="heartsContainer" parent="CanvasLayer" instance=ExtResource("7_fxodv")]
