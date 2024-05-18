@@ -7,6 +7,11 @@ extends CharacterBody2D
 func handleInput():
 	var moveDir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	velocity = moveDir * speed
+	
+func handleCollision():
+	for i in get_slide_collision_count():
+		var collision = get_slide_collision(i)
+		var collider = collision.get_collider()
 
 func updateAnimation():
 	if velocity.length() == 0:
@@ -21,6 +26,10 @@ func updateAnimation():
 	
 func _physics_process(delta):
 	handleInput()
-	move_and_slide()
+	handleCollision()
 	updateAnimation()
+	move_and_slide()
 	
+func _on_hurt_box_area_entered(area):
+	if area.name == "hitBox":
+		print(area.get_parent().name)
