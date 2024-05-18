@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 @export var speed:int
+
 @onready var animation = $AnimationPlayer
 
 func handleInput():
@@ -9,7 +10,8 @@ func handleInput():
 
 func updateAnimation():
 	if velocity.length() == 0:
-		animation.stop()
+		if animation.is_playing():
+			animation.stop()
 	else:
 		var direction = "Down"
 		if velocity.x < 0: direction = "Left"
