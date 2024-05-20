@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://hlelf3a6byfr"]
+[gd_scene load_steps=14 format=3 uid="uid://hlelf3a6byfr"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_qtbwr"]
 [ext_resource type="Texture2D" uid="uid://cwh6aj3pys4ks" path="res://art/playerSprite.png" id="1_ynx28"]
@@ -100,6 +100,45 @@ size = Vector2(12, 4)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qs1xb"]
 
+[sub_resource type="Animation" id="Animation_a6x23"]
+resource_name = "hurtBlink"
+length = 0.4
+loop_mode = 1
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D/ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0001, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.564706), Color(1, 1, 1, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_jd83g"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D/ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_cojdu"]
+_data = {
+"RESET": SubResource("Animation_jd83g"),
+"hurtBlink": SubResource("Animation_a6x23")
+}
+
 [node name="Player" type="CharacterBody2D"]
 y_sort_enabled = true
 texture_filter = 1
@@ -108,12 +147,19 @@ script = ExtResource("1_qtbwr")
 speed = 70
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+clip_children = 2
 z_index = 1
-y_sort_enabled = true
 texture = ExtResource("1_ynx28")
 offset = Vector2(0, -8)
 hframes = 4
 vframes = 7
+
+[node name="ColorRect" type="ColorRect" parent="Sprite2D"]
+offset_left = -20.0
+offset_top = -24.0
+offset_right = 20.0
+offset_bottom = 16.0
+color = Color(0, 0, 0, 0)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -131,5 +177,14 @@ collision_mask = 3
 position = Vector2(0, -7.215)
 scale = Vector2(0.71, 0.71)
 shape = SubResource("RectangleShape2D_qs1xb")
+
+[node name="Effects" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_cojdu")
+}
+
+[node name="hurtTimer" type="Timer" parent="."]
+wait_time = 0.4
+one_shot = true
 
 [connection signal="area_entered" from="hurtBox" to="." method="_on_hurt_box_area_entered"]

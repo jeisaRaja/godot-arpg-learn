@@ -4,7 +4,7 @@ extends Node2D
 
 func _ready():
 	heartsContainer.setMaxHearts(player.maxHealth)
-	heartsContainer.updateHearts(2)
+	heartsContainer.updateHearts(3)
 
 func _process(delta):
 	pass

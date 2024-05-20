@@ -1,7 +1,13 @@
 extends CharacterBody2D
 
 @export var speed:int
+@export var knockbackPower: int = 500
 @onready var animation = $AnimationPlayer
+@onready var heartContainer = $"../../CanvasLayer/heartsContainer"
+@onready var effects = $Effects
+@onready var hurtTimer = $hurtTimer
+
+var isHurt : bool = false
 
 var maxHealth: int = 3
 var currHealth: int = maxHealth
@@ -32,8 +38,23 @@ func _physics_process(delta):
 	move_and_slide()
 	
 func _on_hurt_box_area_entered(area):
+	if isHurt: return
 	if area.name == "hitBox":
 		currHealth -= 1
 		if currHealth < 0:
 			currHealth = maxHealth
-		print(currHealth)
+		var enemyVelocity = area.get_parent().velocity
+		knockback(enemyVelocity)
+		heartContainer.updateHearts(currHealth)
+		isHurt = true
+		effects.play("hurtBlink")
+		hurtTimer.start()
+		await hurtTimer.timeout
+		isHurt = false
+		effects.play("RESET")
+
+func knockback(enemyVelocity: Vector2):
+	var knockbackDir = (enemyVelocity.normalized() - velocity.normalized()) * knockbackPower
+	velocity = knockbackDir
+	move_and_slide()
+	
